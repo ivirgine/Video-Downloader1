@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video Downloader</title>
+    <style>
+        /* Simplified styling for brevity */
+        body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+        form, .result { background: #fff; padding: 20px; border-radius: 8px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Video Downloader</h1>
+    <form id="downloadForm">
+        <input type="text" name="url" placeholder="Enter video URL" required>
+        <button type="submit">Fetch</button>
+    </form>
+    <div id="results"></div>
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const url = e.target.url.value;
+            const res = await fetch('/fetch', {
+                method: 'POST',
+                body: new FormData(e.target)
+            });
+            const data = await res.json();
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>' + data.title + '</h2>' +
+                '<img src="' + data.thumbnail + '" width="200"><br>' +
+                data.formats.map(f => '<a href="' + f.proxy_url + '">' + f.res + '</a>').join('<br>');
+        });
+    </script>
+</body>
+</html>

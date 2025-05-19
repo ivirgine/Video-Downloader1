@@ -1,0 +1,5 @@
+Flask
+pytube
+requests
+flask-cors
+gunicorn
